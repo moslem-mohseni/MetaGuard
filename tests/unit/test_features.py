@@ -12,10 +12,10 @@ import pytest
 
 from metaguard.features import (
     FeatureEngineer,
-    extract_features,
-    create_risk_features,
-    normalize_features,
     apply_normalization,
+    create_risk_features,
+    extract_features,
+    normalize_features,
 )
 
 
@@ -78,9 +78,7 @@ class TestFeatureEngineer:
 
         assert features.shape == (1, len(engineer.feature_names))
 
-    def test_derived_features_calculation(
-        self, engineer: FeatureEngineer
-    ) -> None:
+    def test_derived_features_calculation(self, engineer: FeatureEngineer) -> None:
         """Test derived feature calculations."""
         transaction = {"amount": 100, "hour": 3, "user_age_days": 10, "transaction_count": 20}
         features = engineer.transform_single(transaction)
@@ -216,11 +214,14 @@ class TestNormalizeFeatures:
     @pytest.fixture
     def sample_features(self) -> np.ndarray:
         """Create sample feature array."""
-        return np.array([
-            [100, 14, 30, 5],
-            [5000, 3, 5, 50],
-            [50, 10, 365, 3],
-        ], dtype=float)
+        return np.array(
+            [
+                [100, 14, 30, 5],
+                [5000, 3, 5, 50],
+                [50, 10, 365, 3],
+            ],
+            dtype=float,
+        )
 
     def test_standard_normalization(self, sample_features: np.ndarray) -> None:
         """Test standard (z-score) normalization."""

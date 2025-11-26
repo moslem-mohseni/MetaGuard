@@ -183,9 +183,7 @@ class TestCheckTransaction:
         assert "risk_score" in result
         assert "risk_level" in result
 
-    def test_check_transaction_suspicious(
-        self, suspicious_transaction: dict[str, Any]
-    ) -> None:
+    def test_check_transaction_suspicious(self, suspicious_transaction: dict[str, Any]) -> None:
         """Test check_transaction detects suspicious."""
         result = check_transaction(suspicious_transaction)
         assert result["is_suspicious"] == True  # noqa: E712

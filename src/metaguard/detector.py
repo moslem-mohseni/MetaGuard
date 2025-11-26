@@ -114,7 +114,7 @@ class SimpleDetector:
 
         try:
             with self._model_path.open("rb") as f:
-                self._model = pickle.load(f)
+                self._model = pickle.load(f)  # nosec B301 - Loading trusted model files
             logger.debug(f"Model loaded successfully from {self._model_path}")
         except Exception as e:
             logger.error(f"Failed to load model: {e}")
@@ -240,9 +240,7 @@ class SimpleDetector:
         results = [self.detect(tx) for tx in transactions]
 
         suspicious_count = sum(1 for r in results if r["is_suspicious"])
-        logger.info(
-            f"Batch complete: {suspicious_count}/{len(results)} suspicious transactions"
-        )
+        logger.info(f"Batch complete: {suspicious_count}/{len(results)} suspicious transactions")
 
         return results
 

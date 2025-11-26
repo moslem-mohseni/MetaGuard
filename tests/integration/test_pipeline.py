@@ -10,8 +10,6 @@ import pickle
 from pathlib import Path
 from typing import Any
 
-import pandas as pd
-import pytest
 from sklearn.ensemble import RandomForestClassifier
 
 from metaguard import SimpleDetector, check_transaction
@@ -21,9 +19,7 @@ from metaguard.utils.config import MetaGuardConfig, reset_config, set_config
 class TestDetectionPipeline:
     """Integration tests for the full detection pipeline."""
 
-    def test_single_detection_pipeline(
-        self, sample_transaction: dict[str, Any]
-    ) -> None:
+    def test_single_detection_pipeline(self, sample_transaction: dict[str, Any]) -> None:
         """Test full pipeline for single transaction detection."""
         # Use check_transaction which creates detector internally
         result = check_transaction(sample_transaction)
@@ -36,9 +32,7 @@ class TestDetectionPipeline:
         assert 0 <= result["risk_score"] <= 1
         assert result["risk_level"] in ["Low", "Medium", "High"]
 
-    def test_batch_detection_pipeline(
-        self, batch_transactions: list[dict[str, Any]]
-    ) -> None:
+    def test_batch_detection_pipeline(self, batch_transactions: list[dict[str, Any]]) -> None:
         """Test full pipeline for batch detection."""
         detector = SimpleDetector()
         results = detector.batch_detect(batch_transactions)
@@ -49,9 +43,7 @@ class TestDetectionPipeline:
             assert "risk_score" in result
             assert "risk_level" in result
 
-    def test_detector_with_custom_config(
-        self, sample_transaction: dict[str, Any]
-    ) -> None:
+    def test_detector_with_custom_config(self, sample_transaction: dict[str, Any]) -> None:
         """Test detection with custom configuration."""
         reset_config()
 
@@ -64,9 +56,7 @@ class TestDetectionPipeline:
         # Result should use custom threshold
         assert "is_suspicious" in result
 
-    def test_multiple_detectors_same_model(
-        self, sample_transaction: dict[str, Any]
-    ) -> None:
+    def test_multiple_detectors_same_model(self, sample_transaction: dict[str, Any]) -> None:
         """Test multiple detector instances produce consistent results."""
         detector1 = SimpleDetector()
         detector2 = SimpleDetector()
@@ -121,7 +111,7 @@ class TestModelPipeline:
 
         # Save model
         model_path = temp_model_dir / "custom_model.pkl"
-        with open(model_path, "wb") as f:
+        with model_path.open("wb") as f:
             pickle.dump(model, f)
 
         # Load with detector

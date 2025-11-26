@@ -141,13 +141,15 @@ class EnsembleModel(BaseModel):
             y_val_pred = self.predict(X_val)
             y_val_proba = self.predict_proba(X_val)[:, 1]
 
-            ensemble_metrics.update({
-                "val_accuracy": accuracy_score(y_val, y_val_pred),
-                "val_precision": precision_score(y_val, y_val_pred, zero_division=0),
-                "val_recall": recall_score(y_val, y_val_pred, zero_division=0),
-                "val_f1": f1_score(y_val, y_val_pred, zero_division=0),
-                "val_auc_roc": roc_auc_score(y_val, y_val_proba),
-            })
+            ensemble_metrics.update(
+                {
+                    "val_accuracy": accuracy_score(y_val, y_val_pred),
+                    "val_precision": precision_score(y_val, y_val_pred, zero_division=0),
+                    "val_recall": recall_score(y_val, y_val_pred, zero_division=0),
+                    "val_f1": f1_score(y_val, y_val_pred, zero_division=0),
+                    "val_auc_roc": roc_auc_score(y_val, y_val_proba),
+                }
+            )
 
         # Include individual model metrics
         for i, metrics in enumerate(all_metrics):
@@ -227,7 +229,7 @@ class EnsembleModel(BaseModel):
             "model_type": "EnsembleModel",
         }
 
-        with open(path, "wb") as f:
+        with path.open("wb") as f:
             pickle.dump(model_data, f)
 
         self._model_path = path
@@ -249,8 +251,8 @@ class EnsembleModel(BaseModel):
             raise ModelNotFoundError(str(path))
 
         try:
-            with open(path, "rb") as f:
-                model_data = pickle.load(f)
+            with path.open("rb") as f:
+                model_data = pickle.load(f)  # nosec B301 - Loading trusted model files
 
             self.models = model_data["models"]
             self.weights = np.array(model_data["weights"])
@@ -294,10 +296,7 @@ class EnsembleModel(BaseModel):
         avg_importance = {}
 
         for feature in self.feature_names:
-            weighted_sum = sum(
-                imp[feature] * w
-                for imp, w in zip(all_importances, model_weights)
-            )
+            weighted_sum = sum(imp[feature] * w for imp, w in zip(all_importances, model_weights))
             avg_importance[feature] = weighted_sum
 
         return avg_importance
@@ -309,12 +308,14 @@ class EnsembleModel(BaseModel):
             Dictionary with ensemble details.
         """
         info = super().get_model_info()
-        info.update({
-            "n_models": len(self.models),
-            "voting": self.voting,
-            "weights": self.weights.tolist(),
-            "model_types": [m.__class__.__name__ for m in self.models],
-        })
+        info.update(
+            {
+                "n_models": len(self.models),
+                "voting": self.voting,
+                "weights": self.weights.tolist(),
+                "model_types": [m.__class__.__name__ for m in self.models],
+            }
+        )
 
         if self._is_fitted:
             try:

@@ -31,6 +31,7 @@ logger = get_logger(__name__)
 # Try to import xgboost, set flag if not available
 try:
     import xgboost as xgb
+
     XGBOOST_AVAILABLE = True
 except ImportError:
     XGBOOST_AVAILABLE = False
@@ -163,7 +164,8 @@ class XGBoostModel(BaseModel):
             eval_set = [validation_data]
 
         self._model.fit(
-            X, y,
+            X,
+            y,
             eval_set=eval_set,
             verbose=False,
         )
@@ -189,13 +191,15 @@ class XGBoostModel(BaseModel):
             y_val_pred = self._model.predict(X_val)
             y_val_proba = self._model.predict_proba(X_val)[:, 1]
 
-            metrics.update({
-                "val_accuracy": accuracy_score(y_val, y_val_pred),
-                "val_precision": precision_score(y_val, y_val_pred, zero_division=0),
-                "val_recall": recall_score(y_val, y_val_pred, zero_division=0),
-                "val_f1": f1_score(y_val, y_val_pred, zero_division=0),
-                "val_auc_roc": roc_auc_score(y_val, y_val_proba),
-            })
+            metrics.update(
+                {
+                    "val_accuracy": accuracy_score(y_val, y_val_pred),
+                    "val_precision": precision_score(y_val, y_val_pred, zero_division=0),
+                    "val_recall": recall_score(y_val, y_val_pred, zero_division=0),
+                    "val_f1": f1_score(y_val, y_val_pred, zero_division=0),
+                    "val_auc_roc": roc_auc_score(y_val, y_val_proba),
+                }
+            )
 
         logger.info(
             f"Training complete - Accuracy: {metrics['train_accuracy']:.4f}, "
@@ -260,7 +264,7 @@ class XGBoostModel(BaseModel):
             "model_type": "XGBoostModel",
         }
 
-        with open(path, "wb") as f:
+        with path.open("wb") as f:
             pickle.dump(model_data, f)
 
         self._model_path = path
@@ -282,8 +286,8 @@ class XGBoostModel(BaseModel):
             raise ModelNotFoundError(str(path))
 
         try:
-            with open(path, "rb") as f:
-                model_data = pickle.load(f)
+            with path.open("rb") as f:
+                model_data = pickle.load(f)  # nosec B301 - Loading trusted model files
 
             if isinstance(model_data, dict) and "model" in model_data:
                 self._model = model_data["model"]
@@ -323,14 +327,16 @@ class XGBoostModel(BaseModel):
             Dictionary with model details.
         """
         info = super().get_model_info()
-        info.update({
-            "n_estimators": self.n_estimators,
-            "max_depth": self.max_depth,
-            "learning_rate": self.learning_rate,
-            "subsample": self.subsample,
-            "colsample_bytree": self.colsample_bytree,
-            "scale_pos_weight": self.scale_pos_weight,
-        })
+        info.update(
+            {
+                "n_estimators": self.n_estimators,
+                "max_depth": self.max_depth,
+                "learning_rate": self.learning_rate,
+                "subsample": self.subsample,
+                "colsample_bytree": self.colsample_bytree,
+                "scale_pos_weight": self.scale_pos_weight,
+            }
+        )
 
         if self._is_fitted:
             info["feature_importance"] = self.get_feature_importance()

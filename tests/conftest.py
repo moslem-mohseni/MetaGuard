@@ -10,8 +10,9 @@ from __future__ import annotations
 
 import shutil
 import tempfile
+from collections.abc import Generator
 from pathlib import Path
-from typing import Any, Generator
+from typing import Any
 
 import pandas as pd
 import pytest

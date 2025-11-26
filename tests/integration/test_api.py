@@ -18,7 +18,7 @@ fastapi = pytest.importorskip("fastapi")
 
 from fastapi.testclient import TestClient
 
-from metaguard.api.rest import app, get_detector
+from metaguard.api.rest import app
 
 
 @pytest.fixture

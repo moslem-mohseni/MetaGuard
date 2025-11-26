@@ -10,8 +10,6 @@ import json
 import logging
 from pathlib import Path
 
-import pytest
-
 from metaguard.utils.logging import (
     ColoredFormatter,
     JSONFormatter,
@@ -84,9 +82,7 @@ class TestColoredFormatter:
 
     def test_format_adds_color(self) -> None:
         """Test formatter adds color codes to level name."""
-        formatter = ColoredFormatter(
-            fmt="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-        )
+        formatter = ColoredFormatter(fmt="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
         record = logging.LogRecord(
             name="test",
             level=logging.INFO,
@@ -102,9 +98,7 @@ class TestColoredFormatter:
 
     def test_color_for_each_level(self) -> None:
         """Test each level gets formatted."""
-        formatter = ColoredFormatter(
-            fmt="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-        )
+        formatter = ColoredFormatter(fmt="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
         levels = [
             logging.DEBUG,
             logging.INFO,
@@ -219,8 +213,6 @@ class TestLoggerAdapter:
         base_logger = get_logger("test")
         adapter = LoggerAdapter(base_logger, {"request_id": "abc123"})
 
-        msg, kwargs = adapter.process(
-            "Test message", {"extra": {"user_id": "user1"}}
-        )
+        msg, kwargs = adapter.process("Test message", {"extra": {"user_id": "user1"}})
         assert kwargs["extra"]["request_id"] == "abc123"
         assert kwargs["extra"]["user_id"] == "user1"

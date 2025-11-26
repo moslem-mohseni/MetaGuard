@@ -212,7 +212,7 @@ def create_risk_features(transaction: dict[str, Any]) -> dict[str, Any]:
         "is_high_frequency": tx_count > 20,
         "is_very_high_frequency": tx_count > 50,
         "is_unusual_hour": 0 <= hour <= 5,
-        "is_late_night": 22 <= hour or hour <= 3,
+        "is_late_night": hour >= 22 or hour <= 3,
     }
 
     # Risk score components

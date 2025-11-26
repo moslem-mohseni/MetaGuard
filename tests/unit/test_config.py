@@ -113,7 +113,7 @@ class TestMetaGuardConfig:
         """Test configuration uses defaults when env vars not set."""
         # Clear any existing METAGUARD_ env vars
         env_to_clear = [k for k in os.environ if k.startswith("METAGUARD_")]
-        with patch.dict(os.environ, {k: "" for k in env_to_clear}, clear=False):
+        with patch.dict(os.environ, dict.fromkeys(env_to_clear, ""), clear=False):
             config = MetaGuardConfig.from_env()
             # Should use default values
             assert config.model_type == "random_forest"

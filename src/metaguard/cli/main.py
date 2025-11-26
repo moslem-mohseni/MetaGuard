@@ -9,17 +9,15 @@ Command-line interface for fraud detection.
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
-from typing import Optional
 
 import typer
 from rich.console import Console
-from rich.table import Table
 from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
+from rich.table import Table
 
-from .. import __version__, SimpleDetector, check_transaction, analyze_transaction_risk
+from .. import SimpleDetector, __version__, analyze_transaction_risk, check_transaction
 from ..utils.exceptions import InvalidTransactionError, MetaGuardError
 
 # Create Typer app
@@ -58,15 +56,9 @@ def main(
 def detect(
     amount: float = typer.Option(..., "--amount", "-a", help="Transaction amount"),
     hour: int = typer.Option(..., "--hour", "-h", help="Hour of day (0-23)"),
-    user_age: int = typer.Option(
-        ..., "--user-age", "-u", help="Account age in days"
-    ),
-    tx_count: int = typer.Option(
-        ..., "--tx-count", "-t", help="Number of prior transactions"
-    ),
-    json_output: bool = typer.Option(
-        False, "--json", "-j", help="Output as JSON"
-    ),
+    user_age: int = typer.Option(..., "--user-age", "-u", help="Account age in days"),
+    tx_count: int = typer.Option(..., "--tx-count", "-t", help="Number of prior transactions"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
 ) -> None:
     """Detect fraud in a single transaction."""
     try:
@@ -111,15 +103,9 @@ def detect(
 def analyze(
     amount: float = typer.Option(..., "--amount", "-a", help="Transaction amount"),
     hour: int = typer.Option(..., "--hour", "-h", help="Hour of day (0-23)"),
-    user_age: int = typer.Option(
-        ..., "--user-age", "-u", help="Account age in days"
-    ),
-    tx_count: int = typer.Option(
-        ..., "--tx-count", "-t", help="Number of prior transactions"
-    ),
-    json_output: bool = typer.Option(
-        False, "--json", "-j", help="Output as JSON"
-    ),
+    user_age: int = typer.Option(..., "--user-age", "-u", help="Account age in days"),
+    tx_count: int = typer.Option(..., "--tx-count", "-t", help="Number of prior transactions"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="Output as JSON"),
 ) -> None:
     """Perform detailed risk analysis on a transaction."""
     try:
@@ -151,15 +137,11 @@ def analyze(
                 status = "[red]Active[/red]" if active else "[green]Inactive[/green]"
                 table.add_row(factor.replace("_", " ").title(), status)
 
-            console.print(
-                f"\n[bold]Risk Score:[/bold] {result['risk_score']:.1f}/100"
-            )
+            console.print(f"\n[bold]Risk Score:[/bold] {result['risk_score']:.1f}/100")
             console.print(
                 f"[bold]Risk Level:[/bold] [{risk_color}]{result['risk_level']}[/{risk_color}]"
             )
-            console.print(
-                f"[bold]Active Factors:[/bold] {result['active_factor_count']}/4\n"
-            )
+            console.print(f"[bold]Active Factors:[/bold] {result['active_factor_count']}/4\n")
             console.print(table)
 
     except InvalidTransactionError as e:
@@ -172,10 +154,8 @@ def analyze(
 
 @app.command()
 def batch(
-    input_file: Path = typer.Argument(
-        ..., help="Input JSON file with transactions"
-    ),
-    output_file: Optional[Path] = typer.Option(
+    input_file: Path = typer.Argument(..., help="Input JSON file with transactions"),
+    output_file: Path | None = typer.Option(
         None, "--output", "-o", help="Output JSON file for results"
     ),
 ) -> None:
@@ -186,7 +166,7 @@ def batch(
             console.print(f"[red]Error:[/red] File not found: {input_file}")
             raise typer.Exit(code=1)
 
-        with open(input_file) as f:
+        with input_file.open() as f:
             data = json.load(f)
 
         # Handle both list and dict with 'transactions' key
@@ -207,9 +187,7 @@ def batch(
             TextColumn("[progress.description]{task.description}"),
             console=console,
         ) as progress:
-            task = progress.add_task(
-                f"Processing {len(transactions)} transactions...", total=None
-            )
+            progress.add_task(f"Processing {len(transactions)} transactions...", total=None)
             results = detector.batch_detect(transactions)
 
         # Count results
@@ -249,7 +227,7 @@ def batch(
                 "suspicious": suspicious_count,
                 "results": results,
             }
-            with open(output_file, "w") as f:
+            with output_file.open("w") as f:
                 json.dump(output_data, f, indent=2)
             console.print(f"\n[green]Results saved to:[/green] {output_file}")
 
@@ -286,7 +264,9 @@ def info() -> None:
 
 @app.command()
 def serve(
-    host: str = typer.Option("0.0.0.0", "--host", help="Host to bind to"),
+    host: str = typer.Option(
+        "0.0.0.0", "--host", help="Host to bind to"  # nosec B104
+    ),
     port: int = typer.Option(8000, "--port", "-p", help="Port to bind to"),
     reload: bool = typer.Option(False, "--reload", "-r", help="Enable auto-reload"),
 ) -> None:
@@ -294,9 +274,7 @@ def serve(
     try:
         import uvicorn
 
-        console.print(
-            f"[green]Starting MetaGuard API server on {host}:{port}[/green]"
-        )
+        console.print(f"[green]Starting MetaGuard API server on {host}:{port}[/green]")
         console.print(f"[dim]API docs: http://{host}:{port}/docs[/dim]")
         console.print("[dim]Press Ctrl+C to stop[/dim]\n")
 
@@ -308,8 +286,7 @@ def serve(
         )
     except ImportError:
         console.print(
-            "[red]Error:[/red] uvicorn not installed. "
-            "Install with: pip install metaguard[api]"
+            "[red]Error:[/red] uvicorn not installed. " "Install with: pip install metaguard[api]"
         )
         raise typer.Exit(code=1)
 

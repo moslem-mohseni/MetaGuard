@@ -152,7 +152,8 @@ class MetaGuardConfig(BaseModel):
             "n_jobs": int(os.getenv("METAGUARD_N_JOBS", "-1")),
             "use_feature_engineering": os.getenv(
                 "METAGUARD_USE_FEATURE_ENGINEERING", "true"
-            ).lower() == "true",
+            ).lower()
+            == "true",
         }
 
         # Remove None values to use defaults

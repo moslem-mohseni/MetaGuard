@@ -135,9 +135,7 @@ class BaseModel(ABC):
         Raises:
             NotImplementedError: If the model doesn't support feature importance.
         """
-        raise NotImplementedError(
-            f"{self.__class__.__name__} does not support feature importance"
-        )
+        raise NotImplementedError(f"{self.__class__.__name__} does not support feature importance")
 
     def get_model_info(self) -> dict[str, Any]:
         """Get information about the model.
@@ -166,9 +164,7 @@ class BaseModel(ABC):
 
         expected_features = len(self.feature_names)
         if X.shape[1] != expected_features:
-            raise ValueError(
-                f"Expected {expected_features} features, got {X.shape[1]}"
-            )
+            raise ValueError(f"Expected {expected_features} features, got {X.shape[1]}")
 
     def __repr__(self) -> str:
         """Return string representation of the model."""

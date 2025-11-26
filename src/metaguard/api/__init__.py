@@ -9,21 +9,21 @@ Author: Moslem Mohseni
 from __future__ import annotations
 
 from .schemas import (
-    TransactionRequest,
-    DetectionResponse,
     BatchRequest,
     BatchResponse,
+    DetectionResponse,
     HealthResponse,
-    RiskAnalysisResponse,
     ModelInfoResponse,
+    RiskAnalysisResponse,
+    TransactionRequest,
 )
 
 __all__: list[str] = [
-    "TransactionRequest",
-    "DetectionResponse",
     "BatchRequest",
     "BatchResponse",
+    "DetectionResponse",
     "HealthResponse",
-    "RiskAnalysisResponse",
     "ModelInfoResponse",
+    "RiskAnalysisResponse",
+    "TransactionRequest",
 ]

@@ -9,26 +9,26 @@ FastAPI-based REST API for fraud detection.
 from __future__ import annotations
 
 import time
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import Any
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from .. import __version__, SimpleDetector, analyze_transaction_risk
+from .. import SimpleDetector, __version__, analyze_transaction_risk
 from ..utils.exceptions import InvalidTransactionError, MetaGuardError
 from ..utils.logging import get_logger
 from .schemas import (
-    TransactionRequest,
-    DetectionResponse,
     BatchRequest,
     BatchResponse,
-    HealthResponse,
-    RiskAnalysisResponse,
-    ModelInfoResponse,
+    DetectionResponse,
     ErrorResponse,
+    HealthResponse,
+    ModelInfoResponse,
+    RiskAnalysisResponse,
     RiskFactors,
+    TransactionRequest,
 )
 
 logger = get_logger(__name__)
@@ -46,7 +46,7 @@ def get_detector() -> SimpleDetector:
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     """Application lifespan manager."""
     # Startup
     logger.info("Starting MetaGuard API...")
@@ -95,9 +95,7 @@ async def invalid_transaction_handler(
 
 
 @app.exception_handler(MetaGuardError)
-async def metaguard_error_handler(
-    request: Request, exc: MetaGuardError
-) -> JSONResponse:
+async def metaguard_error_handler(request: Request, exc: MetaGuardError) -> JSONResponse:
     """Handle MetaGuard errors."""
     return JSONResponse(
         status_code=500,
@@ -263,7 +261,7 @@ def create_app() -> FastAPI:
 
 
 def run_server(
-    host: str = "0.0.0.0",
+    host: str = "0.0.0.0",  # nosec B104 - Intentional binding to all interfaces for API
     port: int = 8000,
     reload: bool = False,
 ) -> None:

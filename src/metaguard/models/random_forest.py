@@ -114,8 +114,7 @@ class RandomForestModel(BaseModel):
         self._validate_features(X)
 
         logger.info(
-            f"Training RandomForest with {X.shape[0]} samples, "
-            f"{self.n_estimators} trees"
+            f"Training RandomForest with {X.shape[0]} samples, " f"{self.n_estimators} trees"
         )
 
         # Create and train model
@@ -143,13 +142,15 @@ class RandomForestModel(BaseModel):
             y_val_pred = self._model.predict(X_val)
             y_val_proba = self._model.predict_proba(X_val)[:, 1]
 
-            metrics.update({
-                "val_accuracy": accuracy_score(y_val, y_val_pred),
-                "val_precision": precision_score(y_val, y_val_pred, zero_division=0),
-                "val_recall": recall_score(y_val, y_val_pred, zero_division=0),
-                "val_f1": f1_score(y_val, y_val_pred, zero_division=0),
-                "val_auc_roc": roc_auc_score(y_val, y_val_proba),
-            })
+            metrics.update(
+                {
+                    "val_accuracy": accuracy_score(y_val, y_val_pred),
+                    "val_precision": precision_score(y_val, y_val_pred, zero_division=0),
+                    "val_recall": recall_score(y_val, y_val_pred, zero_division=0),
+                    "val_f1": f1_score(y_val, y_val_pred, zero_division=0),
+                    "val_auc_roc": roc_auc_score(y_val, y_val_proba),
+                }
+            )
 
         logger.info(
             f"Training complete - Accuracy: {metrics['train_accuracy']:.4f}, "
@@ -213,7 +214,7 @@ class RandomForestModel(BaseModel):
             "model_type": "RandomForestModel",
         }
 
-        with open(path, "wb") as f:
+        with path.open("wb") as f:
             pickle.dump(model_data, f)
 
         self._model_path = path
@@ -235,8 +236,8 @@ class RandomForestModel(BaseModel):
             raise ModelNotFoundError(str(path))
 
         try:
-            with open(path, "rb") as f:
-                model_data = pickle.load(f)
+            with path.open("rb") as f:
+                model_data = pickle.load(f)  # nosec B301 - Loading trusted model files
 
             # Handle both old format (just model) and new format (dict with metadata)
             if isinstance(model_data, dict) and "model" in model_data:
@@ -277,13 +278,15 @@ class RandomForestModel(BaseModel):
             Dictionary with model details.
         """
         info = super().get_model_info()
-        info.update({
-            "n_estimators": self.n_estimators,
-            "max_depth": self.max_depth,
-            "min_samples_split": self.min_samples_split,
-            "min_samples_leaf": self.min_samples_leaf,
-            "class_weight": self.class_weight,
-        })
+        info.update(
+            {
+                "n_estimators": self.n_estimators,
+                "max_depth": self.max_depth,
+                "min_samples_split": self.min_samples_split,
+                "min_samples_leaf": self.min_samples_leaf,
+                "class_weight": self.class_weight,
+            }
+        )
 
         if self._is_fitted:
             info["feature_importance"] = self.get_feature_importance()

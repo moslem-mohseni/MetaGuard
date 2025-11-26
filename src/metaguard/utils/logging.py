@@ -72,10 +72,10 @@ class ColoredFormatter(logging.Formatter):
 
     # ANSI color codes
     COLORS: ClassVar[dict[str, str]] = {
-        "DEBUG": "\033[36m",     # Cyan
-        "INFO": "\033[32m",      # Green
-        "WARNING": "\033[33m",   # Yellow
-        "ERROR": "\033[31m",     # Red
+        "DEBUG": "\033[36m",  # Cyan
+        "INFO": "\033[32m",  # Green
+        "WARNING": "\033[33m",  # Yellow
+        "ERROR": "\033[31m",  # Red
         "CRITICAL": "\033[35m",  # Magenta
     }
     RESET: ClassVar[str] = "\033[0m"
@@ -217,9 +217,7 @@ class LoggerAdapter(logging.LoggerAdapter):
         >>> ctx_logger.info("Processing request")
     """
 
-    def process(
-        self, msg: str, kwargs: dict[str, Any]
-    ) -> tuple[str, dict[str, Any]]:
+    def process(self, msg: str, kwargs: dict[str, Any]) -> tuple[str, dict[str, Any]]:
         """Process the log message and add context."""
         extra = kwargs.get("extra", {})
         extra.update(self.extra)

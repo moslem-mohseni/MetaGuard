@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import subprocess
 import sys
-from pathlib import Path
 
 import pytest
 
@@ -42,8 +41,6 @@ class TestPackageImport:
         """Test all public API items can be imported."""
         from metaguard import (
             SimpleDetector,
-            __author__,
-            __version__,
             analyze_transaction_risk,
             calculate_risk,
             check_transaction,

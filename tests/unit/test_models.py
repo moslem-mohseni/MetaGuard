@@ -7,15 +7,14 @@ Author: Moslem Mohseni
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
 
 import numpy as np
 import pytest
 
 from metaguard.models import (
     BaseModel,
-    RandomForestModel,
     EnsembleModel,
+    RandomForestModel,
     create_default_ensemble,
     is_xgboost_available,
 )
@@ -205,9 +204,7 @@ class TestEnsembleModel:
         assert len(ensemble.models) == 2
         # Weights should be normalized
 
-    def test_ensemble_training(
-        self, training_data: tuple[np.ndarray, np.ndarray]
-    ) -> None:
+    def test_ensemble_training(self, training_data: tuple[np.ndarray, np.ndarray]) -> None:
         """Test ensemble training."""
         X, y = training_data
         ensemble = create_default_ensemble()
@@ -218,9 +215,7 @@ class TestEnsembleModel:
         assert "train_accuracy" in metrics
         assert "train_auc_roc" in metrics
 
-    def test_ensemble_predict(
-        self, training_data: tuple[np.ndarray, np.ndarray]
-    ) -> None:
+    def test_ensemble_predict(self, training_data: tuple[np.ndarray, np.ndarray]) -> None:
         """Test ensemble prediction."""
         X, y = training_data
         ensemble = create_default_ensemble()
@@ -231,9 +226,7 @@ class TestEnsembleModel:
         assert predictions.shape == (len(X),)
         assert set(predictions).issubset({0, 1})
 
-    def test_ensemble_predict_proba(
-        self, training_data: tuple[np.ndarray, np.ndarray]
-    ) -> None:
+    def test_ensemble_predict_proba(self, training_data: tuple[np.ndarray, np.ndarray]) -> None:
         """Test ensemble probability prediction."""
         X, y = training_data
         ensemble = create_default_ensemble()
@@ -244,9 +237,7 @@ class TestEnsembleModel:
         assert proba.shape == (len(X), 2)
         assert np.allclose(proba.sum(axis=1), 1.0)
 
-    def test_ensemble_hard_voting(
-        self, training_data: tuple[np.ndarray, np.ndarray]
-    ) -> None:
+    def test_ensemble_hard_voting(self, training_data: tuple[np.ndarray, np.ndarray]) -> None:
         """Test ensemble with hard voting."""
         X, y = training_data
         models = [
@@ -277,9 +268,7 @@ class TestEnsembleModel:
         assert loaded.is_fitted == True  # noqa: E712
         assert len(loaded.models) == 3
 
-    def test_ensemble_no_models_raises(
-        self, training_data: tuple[np.ndarray, np.ndarray]
-    ) -> None:
+    def test_ensemble_no_models_raises(self, training_data: tuple[np.ndarray, np.ndarray]) -> None:
         """Test training empty ensemble raises error."""
         X, y = training_data
         ensemble = EnsembleModel()
@@ -306,13 +295,8 @@ class TestXGBoostModel:
         y = (X[:, 0] + X[:, 1] > 0).astype(int)
         return X, y
 
-    @pytest.mark.skipif(
-        not is_xgboost_available(),
-        reason="XGBoost not installed"
-    )
-    def test_xgboost_training(
-        self, training_data: tuple[np.ndarray, np.ndarray]
-    ) -> None:
+    @pytest.mark.skipif(not is_xgboost_available(), reason="XGBoost not installed")
+    def test_xgboost_training(self, training_data: tuple[np.ndarray, np.ndarray]) -> None:
         """Test XGBoost model training."""
         from metaguard.models import XGBoostModel
 
@@ -324,13 +308,8 @@ class TestXGBoostModel:
         assert "train_accuracy" in metrics
         assert "train_auc_roc" in metrics
 
-    @pytest.mark.skipif(
-        not is_xgboost_available(),
-        reason="XGBoost not installed"
-    )
-    def test_xgboost_predict(
-        self, training_data: tuple[np.ndarray, np.ndarray]
-    ) -> None:
+    @pytest.mark.skipif(not is_xgboost_available(), reason="XGBoost not installed")
+    def test_xgboost_predict(self, training_data: tuple[np.ndarray, np.ndarray]) -> None:
         """Test XGBoost prediction."""
         from metaguard.models import XGBoostModel
 
@@ -357,6 +336,4 @@ class TestBaseModel:
 
     def test_feature_names(self) -> None:
         """Test default feature names."""
-        assert BaseModel.FEATURE_NAMES == [
-            "amount", "hour", "user_age_days", "transaction_count"
-        ]
+        assert BaseModel.FEATURE_NAMES == ["amount", "hour", "user_age_days", "transaction_count"]

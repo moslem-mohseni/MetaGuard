@@ -21,9 +21,9 @@ except ImportError:
 
 __all__: list[str] = [
     "BaseModel",
+    "EnsembleModel",
     "RandomForestModel",
     "XGBoostModel",
-    "EnsembleModel",
     "create_default_ensemble",
     "is_xgboost_available",
 ]

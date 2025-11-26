@@ -268,12 +268,8 @@ class TestBatchTransactionInput:
     def test_valid_batch(self) -> None:
         """Test valid batch creation."""
         transactions = [
-            TransactionInput(
-                amount=100, hour=14, user_age_days=30, transaction_count=5
-            ),
-            TransactionInput(
-                amount=200, hour=10, user_age_days=60, transaction_count=10
-            ),
+            TransactionInput(amount=100, hour=14, user_age_days=30, transaction_count=5),
+            TransactionInput(amount=200, hour=10, user_age_days=60, transaction_count=10),
         ]
         batch = BatchTransactionInput(transactions=transactions)
         assert len(batch.transactions) == 2
@@ -335,9 +331,7 @@ class TestValidateTransaction:
 class TestValidateTransactions:
     """Tests for validate_transactions function."""
 
-    def test_valid_transactions(
-        self, batch_transactions: list[dict[str, Any]]
-    ) -> None:
+    def test_valid_transactions(self, batch_transactions: list[dict[str, Any]]) -> None:
         """Test validation of valid transactions."""
         results = validate_transactions(batch_transactions)
         assert len(results) == len(batch_transactions)

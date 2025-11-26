@@ -79,7 +79,9 @@ class BatchRequest(BaseModel):
 class BatchResponse(BaseModel):
     """Response schema for batch transaction detection."""
 
-    results: list[DetectionResponse] = Field(..., description="Detection results for each transaction")
+    results: list[DetectionResponse] = Field(
+        ..., description="Detection results for each transaction"
+    )
     total_transactions: int = Field(..., description="Total number of transactions processed")
     suspicious_count: int = Field(..., description="Number of suspicious transactions")
     processing_time_ms: float = Field(..., description="Total processing time in milliseconds")
@@ -89,8 +91,18 @@ class BatchResponse(BaseModel):
             "examples": [
                 {
                     "results": [
-                        {"is_suspicious": False, "risk_score": 0.1, "risk_level": "Low", "processing_time_ms": 5.0},
-                        {"is_suspicious": True, "risk_score": 0.95, "risk_level": "High", "processing_time_ms": 5.0},
+                        {
+                            "is_suspicious": False,
+                            "risk_score": 0.1,
+                            "risk_level": "Low",
+                            "processing_time_ms": 5.0,
+                        },
+                        {
+                            "is_suspicious": True,
+                            "risk_score": 0.95,
+                            "risk_level": "High",
+                            "processing_time_ms": 5.0,
+                        },
                     ],
                     "total_transactions": 2,
                     "suspicious_count": 1,

@@ -18,8 +18,8 @@ from .engineering import (
 
 __all__: list[str] = [
     "FeatureEngineer",
-    "extract_features",
-    "create_risk_features",
-    "normalize_features",
     "apply_normalization",
+    "create_risk_features",
+    "extract_features",
+    "normalize_features",
 ]
