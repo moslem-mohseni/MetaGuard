@@ -147,6 +147,7 @@ known-first-party = ["metaguard"]
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*" = ["ARG", "S101", "E402", "F841", "RUF059"]
 "scripts/**/*" = ["T201"]
+"src/metaguard/cli/main.py" = ["UP045"]  # Optional[X] needed for Python 3.9 + typer compatibility
 
 # Black configuration
 [tool.black]
@@ -197,6 +198,10 @@ module = [
     "pandas.*",
     "joblib.*",
     "xgboost.*",
+    "typer.*",
+    "rich.*",
+    "fastapi.*",
+    "uvicorn.*",
 ]
 ignore_missing_imports = true
 

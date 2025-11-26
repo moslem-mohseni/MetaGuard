@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Optional
 
 import typer
 from rich.console import Console
@@ -155,7 +156,7 @@ def analyze(
 @app.command()
 def batch(
     input_file: Path = typer.Argument(..., help="Input JSON file with transactions"),
-    output_file: Path | None = typer.Option(
+    output_file: Optional[Path] = typer.Option(
         None, "--output", "-o", help="Output JSON file for results"
     ),
 ) -> None:
@@ -264,9 +265,7 @@ def info() -> None:
 
 @app.command()
 def serve(
-    host: str = typer.Option(
-        "0.0.0.0", "--host", help="Host to bind to"  # nosec B104
-    ),
+    host: str = typer.Option("0.0.0.0", "--host", help="Host to bind to"),  # nosec B104
     port: int = typer.Option(8000, "--port", "-p", help="Port to bind to"),
     reload: bool = typer.Option(False, "--reload", "-r", help="Enable auto-reload"),
 ) -> None:
