@@ -1,0 +1,102 @@
+name: Bug Report
+description: Report a bug or unexpected behavior
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out this form as completely as possible.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of the bug.
+      placeholder: When I try to... the result is... but I expected...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. Install MetaGuard with `pip install metaguard`
+        2. Run the following code...
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: code
+    attributes:
+      label: Code Example
+      description: Minimal code to reproduce the issue.
+      render: python
+      placeholder: |
+        from metaguard import check_transaction
+
+        result = check_transaction({
+            "amount": 100,
+            "hour": 14,
+            "user_age_days": 30,
+            "transaction_count": 5
+        })
+
+  - type: textarea
+    id: error
+    attributes:
+      label: Error Message
+      description: Full error message or traceback.
+      render: shell
+
+  - type: dropdown
+    id: version
+    attributes:
+      label: MetaGuard Version
+      options:
+        - "1.1.0"
+        - "1.0.0"
+        - "Other (specify in description)"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: python-version
+    attributes:
+      label: Python Version
+      options:
+        - "3.12"
+        - "3.11"
+        - "3.10"
+        - "3.9"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      options:
+        - "Linux"
+        - "macOS"
+        - "Windows"
+        - "Docker"
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other context about the problem.

@@ -1,0 +1,73 @@
+# MetaGuard Docker Compose Configuration
+# Author: Moslem Mohseni
+#
+# Usage:
+#   Development: docker-compose up
+#   Production:  docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+
+version: "3.9"
+
+services:
+  # ==========================================================================
+  # MetaGuard API Service
+  # ==========================================================================
+  metaguard-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: metaguard:latest
+    container_name: metaguard-api
+    ports:
+      - "8000:8000"
+    environment:
+      - METAGUARD_LOG_LEVEL=${METAGUARD_LOG_LEVEL:-INFO}
+      - METAGUARD_RISK_THRESHOLD=${METAGUARD_RISK_THRESHOLD:-0.5}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx; httpx.get('http://localhost:8000/health').raise_for_status()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 1G
+        reservations:
+          cpus: "0.5"
+          memory: 256M
+    networks:
+      - metaguard-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.metaguard.rule=Host(`metaguard.localhost`)"
+      - "traefik.http.services.metaguard.loadbalancer.server.port=8000"
+
+  # ==========================================================================
+  # Development Service (with hot reload)
+  # ==========================================================================
+  metaguard-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: metaguard:dev
+    container_name: metaguard-dev
+    ports:
+      - "8001:8000"
+    environment:
+      - METAGUARD_LOG_LEVEL=DEBUG
+      - METAGUARD_RISK_THRESHOLD=0.5
+    volumes:
+      - ./src:/app/src:ro
+      - ./tests:/app/tests:ro
+    command: ["uvicorn", "metaguard.api.rest:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    profiles:
+      - dev
+    networks:
+      - metaguard-network
+
+networks:
+  metaguard-network:
+    driver: bridge
