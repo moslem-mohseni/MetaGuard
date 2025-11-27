@@ -193,7 +193,9 @@ class TestCommandLineUsage:
             text=True,
         )
         assert result.returncode == 0
-        assert "1." in result.stdout  # Version starts with 1.
+        # Version should be semver format (e.g., 2.3.0)
+        version = result.stdout.strip()
+        assert len(version.split(".")) >= 2
 
     def test_basic_detection_script(self) -> None:
         """Test basic detection can be run as script."""
