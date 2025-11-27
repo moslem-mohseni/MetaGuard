@@ -36,7 +36,7 @@ FROM python:3.11-slim as production
 LABEL maintainer="Moslem Mohseni <moslem.mohseni@example.com>"
 LABEL org.opencontainers.image.title="MetaGuard"
 LABEL org.opencontainers.image.description="Fraud detection for metaverse transactions"
-LABEL org.opencontainers.image.version="1.1.0"
+LABEL org.opencontainers.image.version="2.3.0"
 LABEL org.opencontainers.image.source="https://github.com/moslem-mohseni/MetaGuard"
 LABEL org.opencontainers.image.licenses="MIT"
 

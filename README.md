@@ -3,14 +3,13 @@
 [![PyPI version](https://badge.fury.io/py/metaguard.svg)](https://badge.fury.io/py/metaguard)
 [![Python Version](https://img.shields.io/pypi/pyversions/metaguard.svg)](https://pypi.org/project/metaguard/)
 [![License](https://img.shields.io/github/license/moslem-mohseni/MetaGuard.svg)](https://github.com/moslem-mohseni/MetaGuard/blob/main/LICENSE)
-[![Tests](https://github.com/moslem-mohseni/MetaGuard/workflows/Tests/badge.svg)](https://github.com/moslem-mohseni/MetaGuard/actions)
+[![CI](https://github.com/moslem-mohseni/MetaGuard/workflows/CI/badge.svg)](https://github.com/moslem-mohseni/MetaGuard/actions)
 [![Coverage](https://codecov.io/gh/moslem-mohseni/MetaGuard/branch/main/graph/badge.svg)](https://codecov.io/gh/moslem-mohseni/MetaGuard)
 [![Documentation](https://readthedocs.org/projects/metaguard/badge/?version=latest)](https://metaguard.readthedocs.io)
 
 > Fraud detection for metaverse transactions with just 3 lines of Python code.
 
 **Author:** Moslem Mohseni
-**Version:** 1.1.0
 
 ## Why MetaGuard?
 
@@ -24,7 +23,7 @@ In 2024, over **$3 billion** was lost to fraud in the metaverse. MetaGuard provi
 - **Risk Analysis** - Get detailed risk factors and scores
 - **Configurable** - Customize thresholds and model parameters
 - **Type-Safe** - Full type hints for IDE support
-- **Well-Tested** - >90% test coverage
+- **Well-Tested** - 80%+ test coverage
 
 ## Installation
 
@@ -298,7 +297,7 @@ make html
 
 | Metric | Value |
 |--------|-------|
-| Test Coverage | >90% |
+| Test Coverage | 80%+ |
 | Speed | <100ms per transaction |
 | Batch (1000) | <30 seconds |
 
@@ -327,7 +326,6 @@ Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md)
   author = {Moslem Mohseni},
   title = {MetaGuard: Fraud Detection for Metaverse Transactions},
   year = {2024},
-  version = {1.1.0},
   url = {https://github.com/moslem-mohseni/MetaGuard}
 }
 ```

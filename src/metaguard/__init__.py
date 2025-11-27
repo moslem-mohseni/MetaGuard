@@ -22,7 +22,7 @@ Example usage:
 
 from __future__ import annotations
 
-__version__ = "1.1.0"
+__version__ = "2.3.0"
 __author__ = "Moslem Mohseni"
 __email__ = "moslem.mohseni@example.com"
 __license__ = "MIT"

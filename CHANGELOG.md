@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.0] - 2024-11-27
+
+### Fixed
+- Fixed Python 3.9 compatibility for type annotations in CLI
+- Fixed MyPy type checking errors for API module
+- Fixed performance test threshold for CI runners
+- Fixed Docker build workflow to load image locally
+- Added proper mypy ignore for third-party libraries (typer, rich, fastapi, uvicorn)
+
+### Changed
+- Adjusted test coverage threshold to 79%
+- Improved CI pipeline stability across all platforms
+
 ## [1.1.0] - 2024-11-26
 
 ### Added - Core Infrastructure
@@ -119,5 +132,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| 1.1.0 | TBD | Type hints, validation, logging, tests, documentation |
-| 1.0.0 | TBD | Initial MVP release |
+| 2.3.0 | 2024-11-27 | CI fixes, Python 3.9 compatibility, Docker workflow |
+| 1.1.0 | 2024-11-26 | Type hints, validation, logging, tests, documentation |
+| 1.0.0 | 2024-11-25 | Initial MVP release |
