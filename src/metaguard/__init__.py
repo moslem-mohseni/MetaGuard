@@ -24,7 +24,7 @@ from __future__ import annotations
 
 __version__ = "2.3.0"
 __author__ = "Moslem Mohseni"
-__email__ = "moslem.mohseni@example.com"
+__email__ = "mrmohsenikhah@gmail.com"
 __license__ = "MIT"
 
 from metaguard.detector import SimpleDetector, check_transaction

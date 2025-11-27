@@ -33,7 +33,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
 FROM python:3.11-slim as production
 
 # Labels
-LABEL maintainer="Moslem Mohseni <moslem.mohseni@example.com>"
+LABEL maintainer="Moslem Mohseni <mrmohsenikhah@gmail.com>"
 LABEL org.opencontainers.image.title="MetaGuard"
 LABEL org.opencontainers.image.description="Fraud detection for metaverse transactions"
 LABEL org.opencontainers.image.version="2.3.0"

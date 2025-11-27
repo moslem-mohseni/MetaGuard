@@ -9,10 +9,10 @@ description = "Fraud detection for metaverse transactions"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
-    {name = "Moslem Mohseni", email = "moslem.mohseni@example.com"}
+    {name = "Moslem Mohseni", email = "mrmohsenikhah@gmail.com"}
 ]
 maintainers = [
-    {name = "Moslem Mohseni", email = "moslem.mohseni@example.com"}
+    {name = "Moslem Mohseni", email = "mrmohsenikhah@gmail.com"}
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
